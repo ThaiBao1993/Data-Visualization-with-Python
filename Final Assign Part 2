@@ -24,8 +24,8 @@ app = dash.Dash(__name__)
 #---------------------------------------------------------------------------------
 # Create the dropdown menu options
 dropdown_options = [
-    {'label': '...........', 'value': 'Yearly Statistics'},
-    {'label': 'Recession Period Statistics', 'value': '.........'}
+    {'label': 'Recession Period Statistics', 'value': 'Yearly Statistics'},
+    {'label': 'Recession Period Statistics', 'value': 'Recession Period Statistics'}
 ]
 # List of years 
 year_list = [i for i in range(1980, 2024, 1)]
@@ -42,20 +42,17 @@ app.layout = html.Div([
                     {'label': 'Yearly Statistics', 'value': 'Yearly Statistics'},
                     {'label': 'Recession Period Statistics', 'value': 'Recession Period Statistics'}
                     ],
-            value='Yearly Statistics',
+            value='Recession Period Statistics',
             placeholder='Select a report type'
         )
     ]),
     html.Div(dcc.Dropdown(
             id='select-year',
             options=[{'label': i, 'value': i} for i in year_list],
-            value='1980'
+            value='Yearly Statistics'
         )),
     html.Div([#TASK 2.3: Add a division for output display
-    html.Div(id='output-container1', className='chart-grid', style={'display': 'flex'}),
-    html.Div(id='output-container2', className='chart-grid', style={'display': 'flex'}),
-    html.Div(id='output-container3', className='chart-grid', style={'display': 'flex'}),
-    html.Div(id='output-container4', className='chart-grid', style={'display': 'flex'})])
+    html.Div(id='output-container', className='chart-grid', style={'display': 'flex'}),])
 ])
 #TASK 2.4: Creating Callbacks
 # Define the callback function to update the input container based on the selected statistics
@@ -72,11 +69,9 @@ def update_input_container(selected_statistics):
 #Callback for plotting
 # Define the callback function to update the input container based on the selected statistics
 @app.callback(
-    [Output(component_id='output-container1', component_property='children'),
-     Output(component_id='output-container2', component_property='children'),
-     Output(component_id='output-container3', component_property='children'),
-     Output(component_id='output-container4', component_property='children')],
-    [Input(component_id='dropdown-statistics', component_property='value'), Input(component_id='select-year', component_property='value')])
+    Output(component_id='output-container', component_property='children'),
+     [Input(component_id='dropdown-statistics', component_property='value'), 
+    Input(component_id='select-year', component_property='value')])
 
 
 def update_output_container(selected_statistics, input_year):
